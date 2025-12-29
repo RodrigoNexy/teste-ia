@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { GroqLeadAnalysisService, LeadAnalysisInput } from './groq-lead-analysis.service.js';
 
+export type LeadStatus = 'em_atendimento' | 'finalizado' | 'travado';
+
 export interface CreateLeadDto {
   name: string;
   email?: string;
@@ -9,6 +11,7 @@ export interface CreateLeadDto {
   origin: string;
   responseTime?: number;
   interactions?: number;
+  status?: LeadStatus;
 }
 
 export interface UpdateLeadDto {
@@ -19,6 +22,7 @@ export interface UpdateLeadDto {
   origin?: string;
   responseTime?: number;
   interactions?: number;
+  status?: LeadStatus;
 }
 
 export class LeadService {
@@ -55,6 +59,7 @@ export class LeadService {
         origin: data.origin,
         responseTime: data.responseTime,
         interactions: data.interactions || 0,
+        status: data.status || 'em_atendimento',
       },
     });
 

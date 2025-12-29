@@ -17,3 +17,23 @@ model User {
   @@map("users")
 }
 
+model Lead {
+  id              String   @id @default(uuid())
+  name            String
+  email           String?
+  phone           String?
+  message         String
+  origin          String   // WhatsApp, Formulário, Email, etc
+  responseTime    Int?     // Tempo de resposta em horas
+  interactions   Int      @default(0)
+  score           Int?     // 0-100
+  classification  String?  // Frio, Morno, Quente
+  scoreReason     String?  // Explicação do score
+  status          String   @default("em_atendimento") // em_atendimento, finalizado, travado
+  analyzedAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("leads")
+}
+

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { userRoutes } from './routes/user.routes.js';
 import { groqRoutes } from './routes/groq.routes.js';
+import { leadRoutes } from './routes/lead.routes.js';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/groq', groqRoutes);
+app.use('/api/leads', leadRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
