@@ -34,15 +34,13 @@ Projeto full-stack com Node.js, Express, TypeScript, React e Prisma ORM conectad
 npm install
 ```
 
-2. Configure o banco de dados:
-   - Crie um arquivo `.env` na raiz do projeto
-   - Adicione sua connection string do Neon.tech e a chave do Groq:
-   ```
-   DATABASE_URL="postgresql://user:password@host.neon.tech/dbname?sslmode=require"
-   GROQ_API_KEY="sua_chave_groq_aqui"
-   PORT=3001
-   NODE_ENV=development
-   ```
+2. Configure as variáveis de ambiente:
+   - Copie o arquivo `env.example` para `.env`:
+     - **Windows (PowerShell)**: `Copy-Item env.example .env`
+     - **Linux/Mac**: `cp env.example .env`
+   - Edite o arquivo `.env` e adicione suas credenciais:
+     - `DATABASE_URL`: Sua connection string do Neon.tech
+     - `GROQ_API_KEY`: Sua chave da API Groq
 
 3. Configure o Prisma:
 ```bash
