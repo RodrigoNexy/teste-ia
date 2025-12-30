@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { Lead, LeadStatus } from '../types/lead.types';
+import { useLeadKanban } from '../hooks/useLeadKanban';
+import { getClassificationColor, getScoreColor } from '../utils/lead.utils';
 
 interface LeadKanbanProps {
   leads: Lead[];
@@ -32,107 +34,17 @@ const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bgColor:
 };
 
 export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange, onExpand }: LeadKanbanProps) {
-  const [draggedLead, setDraggedLead] = useState<string | null>(null);
-  const [dragOverColumn, setDragOverColumn] = useState<LeadStatus | null>(null);
-
-  const getClassificationColor = (classification?: string) => {
-    switch (classification) {
-      case 'Quente':
-        return 'bg-green-100 text-green-800 border-green-300';
-      case 'Morno':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'Frio':
-        return 'bg-red-100 text-red-800 border-red-300';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
-    }
-  };
-
-  const getScoreColor = (score?: number) => {
-    if (!score) return 'text-gray-500';
-    if (score >= 71) return 'text-green-600 font-bold';
-    if (score >= 41) return 'text-yellow-600 font-semibold';
-    return 'text-red-600';
-  };
-
-  const leadsByStatus = {
-    em_atendimento: leads.filter((lead) => lead.status === 'em_atendimento'),
-    finalizado: leads.filter((lead) => lead.status === 'finalizado'),
-    travado: leads.filter((lead) => lead.status === 'travado'),
-  };
-
-  const handleDragStart = (e: React.DragEvent, leadId: string) => {
-    setDraggedLead(leadId);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('application/json', JSON.stringify({ leadId }));
-    e.dataTransfer.setData('text/plain', leadId);
-    // Adiciona uma classe visual ao elemento sendo arrastado
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.style.opacity = '0.5';
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent, status: LeadStatus) => {
-    e.preventDefault();
-    e.stopPropagation();
-    e.dataTransfer.dropEffect = 'move';
-    setDragOverColumn(status);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // Só remove o highlight se realmente saiu da coluna
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-
-    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-      setDragOverColumn(null);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent, targetStatus: LeadStatus) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    let leadId: string | null = null;
-
-    // Tenta pegar o ID de diferentes formas
-    try {
-      const jsonData = e.dataTransfer.getData('application/json');
-      if (jsonData) {
-        const parsed = JSON.parse(jsonData);
-        leadId = parsed.leadId || parsed;
-      }
-    } catch (err) {
-      // Ignora erro de parsing
-    }
-
-    if (!leadId) {
-      leadId = e.dataTransfer.getData('text/plain');
-    }
-
-    if (leadId) {
-      const currentLead = leads.find(l => l.id === leadId);
-      if (currentLead && currentLead.status !== targetStatus) {
-        console.log(`Moving lead ${leadId} from ${currentLead.status} to ${targetStatus}`);
-        onStatusChange(leadId, targetStatus);
-      }
-    } else {
-      console.error('No lead ID found in drop event');
-    }
-
-    setDraggedLead(null);
-  };
-
-  const handleDragEnd = (e: React.DragEvent) => {
-    setDraggedLead(null);
-    // Restaura a opacidade
-    if (e.currentTarget instanceof HTMLElement) {
-      e.currentTarget.style.opacity = '1';
-    }
-  };
+  const {
+    draggedLead,
+    dragOverColumn,
+    leadsByStatus,
+    handleDragStart,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleDragEnd,
+    clearDragOverColumn,
+  } = useLeadKanban({ leads, onStatusChange });
 
   const renderLeadCard = (lead: Lead) => {
     const isDragging = draggedLead === lead.id;
@@ -251,7 +163,7 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
             onDragLeave={handleDragLeave}
             onDrop={(e) => {
               handleDrop(e, statusKey);
-              setDragOverColumn(null);
+              clearDragOverColumn();
             }}
             onDragEnter={(e) => {
               e.preventDefault();

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import type { User } from '../types/user.types';
+import { useUserForm } from '../hooks/useUserForm';
 
 interface UserFormProps {
   user: User | null;
@@ -8,46 +9,15 @@ interface UserFormProps {
 }
 
 export function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      setName(user.name);
-      setEmail(user.email);
-    } else {
-      setName('');
-      setEmail('');
-    }
-    setError('');
-  }, [user]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    if (!name.trim() || !email.trim()) {
-      setError('Nome e email são obrigatórios');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const id = user?.id || '';
-      await onSubmit(id, name.trim(), email.trim());
-      if (!user) {
-        setName('');
-        setEmail('');
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Erro ao salvar usuário');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    name,
+    email,
+    error,
+    loading,
+    setName,
+    setEmail,
+    handleSubmit,
+  } = useUserForm({ user, onSubmit });
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

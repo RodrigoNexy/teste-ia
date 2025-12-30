@@ -1,4 +1,6 @@
 import type { Lead } from '../types/lead.types';
+import React from 'react';
+import { getClassificationColor, getScoreColor } from '../utils/lead.utils';
 
 interface LeadListProps {
   leads: Lead[];
@@ -8,25 +10,6 @@ interface LeadListProps {
 }
 
 export function LeadList({ leads, onEdit, onDelete, onAnalyze }: LeadListProps) {
-  const getClassificationColor = (classification?: string) => {
-    switch (classification) {
-      case 'Quente':
-        return 'bg-green-100 text-green-800 border-green-300';
-      case 'Morno':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      case 'Frio':
-        return 'bg-red-100 text-red-800 border-red-300';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-300';
-    }
-  };
-
-  const getScoreColor = (score?: number) => {
-    if (!score) return 'text-gray-500';
-    if (score >= 71) return 'text-green-600 font-bold';
-    if (score >= 41) return 'text-yellow-600 font-semibold';
-    return 'text-red-600';
-  };
 
   if (leads.length === 0) {
     return (

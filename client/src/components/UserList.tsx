@@ -1,4 +1,6 @@
 import type { User } from '../types/user.types';
+import React from 'react';
+import { formatDateTime } from '../utils/date.utils';
 
 interface UserListProps {
   users: User[];
@@ -14,16 +16,6 @@ export function UserList({ users, onEdit, onDelete }: UserListProps) {
       </div>
     );
   }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
   return (
     <div className="overflow-x-auto">
@@ -54,7 +46,7 @@ export function UserList({ users, onEdit, onDelete }: UserListProps) {
                 {user.email}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {formatDate(user.createdAt)}
+                {formatDateTime(user.createdAt)}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button
