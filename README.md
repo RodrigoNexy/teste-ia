@@ -21,6 +21,7 @@ Teste técnico desenvolvido para demonstrar habilidades em desenvolvimento full-
 - Node.js + Express + TypeScript
 - Prisma ORM + PostgreSQL (Neon.tech)
 - Groq SDK (llama-3.3-70b-versatile)
+- Jest + ts-jest (testes unitários)
 
 **Frontend:**
 - React 18 + TypeScript
@@ -28,6 +29,7 @@ Teste técnico desenvolvido para demonstrar habilidades em desenvolvimento full-
 - Lucide React (ícones)
 - Recharts (gráficos)
 - Vite
+- Vitest + Testing Library (testes unitários)
 
 ## 📁 Estrutura do Projeto
 
@@ -175,6 +177,97 @@ POST /api/groq/completion  # Completion simples
 <img width="274" height="907" alt="image" src="https://github.com/user-attachments/assets/f88f1341-c30f-4ea8-aa81-0e76a068508d" />
 
 
+## 🧪 Testes Unitários
+
+O projeto possui cobertura de testes unitários para garantir a qualidade e confiabilidade do código.
+
+### Tecnologias de Teste
+
+**Backend:**
+- **Jest** - Framework de testes para Node.js
+- **ts-jest** - Suporte TypeScript para Jest
+- **Mocks** - Prisma Client e serviços externos
+
+**Frontend:**
+- **Vitest** - Framework de testes rápido para Vite
+- **@testing-library/react** - Utilitários para testar componentes React
+- **@testing-library/user-event** - Simulação de interações do usuário
+
+### Estrutura de Testes
+
+```
+TestePraticoIa/
+├── src/__tests__/              # Testes do backend
+│   ├── controllers/            # Testes de controllers
+│   │   ├── groq.controller.test.ts
+│   │   ├── lead.controller.test.ts
+│   │   └── user.controller.test.ts
+│   └── services/               # Testes de services
+│       ├── groq-lead-analysis.service.test.ts
+│       ├── lead.service.test.ts
+│       └── user.service.test.ts
+│
+└── client/src/                 # Testes do frontend
+    ├── hooks/__tests__/        # Testes de hooks
+    ├── services/__tests__/     # Testes de serviços
+    └── utils/__tests__/        # Testes de utilitários
+```
+
+### Como Executar os Testes
+
+```bash
+# Executar todos os testes (backend + frontend)
+npm test
+
+# Executar apenas testes do backend (Jest)
+npm run test:backend
+
+# Executar apenas testes do frontend (Vitest)
+npm run test:frontend
+
+# Modo watch (re-executa ao salvar arquivos)
+npm run test:watch              # Backend + Frontend
+npm run test:watch:backend      # Apenas backend
+npm run test:watch:frontend     # Apenas frontend
+
+# Testes com cobertura de código
+npm run test:coverage
+```
+
+### O que é Testado
+
+**Backend:**
+- ✅ Controllers (validação de requisições, respostas HTTP)
+- ✅ Services (lógica de negócio, integração com Prisma)
+- ✅ Análise de leads com IA (Groq)
+- ✅ CRUD completo de leads e usuários
+- ✅ Tratamento de erros e validações
+
+**Frontend:**
+- ✅ Custom Hooks (lógica de estado, efeitos)
+- ✅ Serviços de API (chamadas HTTP)
+- ✅ Utilitários (formatação, cálculos)
+- ✅ Componentes React (renderização, interações)
+
+### Exemplo de Teste
+
+```typescript
+// src/__tests__/controllers/groq.controller.test.ts
+describe('GroqController', () => {
+  it('deve criar chat completion', async () => {
+    const requestData = {
+      messages: [{ role: 'user', content: 'Olá!' }],
+      model: 'llama-3.3-70b-versatile',
+    };
+
+    await controller.chatCompletion(mockRequest, mockResponse);
+
+    expect(mockGroqService.createChatCompletion).toHaveBeenCalledWith(requestData);
+    expect(mockResponse.json).toHaveBeenCalled();
+  });
+});
+```
+
 ## 📜 Scripts
 
 ```bash
@@ -187,6 +280,13 @@ npm run dev:client       # Apenas frontend
 npm run build            # Build completo
 npm run build:server     # Build backend
 npm run build:client     # Build frontend
+
+# Testes
+npm test                 # Todos os testes
+npm run test:backend     # Testes backend (Jest)
+npm run test:frontend    # Testes frontend (Vitest)
+npm run test:watch       # Modo watch
+npm run test:coverage    # Com cobertura
 
 # Prisma
 npm run prisma:generate  # Gerar Prisma Client

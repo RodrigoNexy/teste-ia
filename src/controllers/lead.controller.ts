@@ -8,7 +8,7 @@ export class LeadController {
     this.leadService = new LeadService();
   }
 
-  async getAll(req: Request, res: Response): Promise<void> {
+  async getAll(_req: Request, res: Response): Promise<void> {
     try {
       const leads = await this.leadService.findAll();
       res.json(leads);
@@ -116,7 +116,7 @@ export class LeadController {
     }
   }
 
-  async getStats(req: Request, res: Response): Promise<void> {
+  async getStats(_req: Request, res: Response): Promise<void> {
     try {
       const stats = await this.leadService.getStats();
       res.json(stats);

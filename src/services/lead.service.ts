@@ -72,7 +72,7 @@ export class LeadService {
   }
 
   async update(id: string, data: UpdateLeadDto) {
-    const lead = await this.prisma.lead.update({
+    await this.prisma.lead.update({
       where: { id },
       data,
     });

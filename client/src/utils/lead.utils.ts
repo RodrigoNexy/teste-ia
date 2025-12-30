@@ -12,7 +12,7 @@ export const getClassificationColor = (classification?: string) => {
 };
 
 export const getScoreColor = (score?: number) => {
-  if (!score) return 'text-gray-500';
+  if (score === undefined || score === null) return 'text-gray-500';
   if (score >= 71) return 'text-green-600 font-bold';
   if (score >= 41) return 'text-yellow-600 font-semibold';
   return 'text-red-600';
