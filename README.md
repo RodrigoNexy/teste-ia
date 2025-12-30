@@ -2,18 +2,6 @@
 
 Sistema de qualificação inteligente de leads utilizando análise de IA (Groq) para gerar scores de probabilidade de fechamento. Desenvolvido como teste técnico/desafio em Node.js, Express, TypeScript, React e Prisma.
 
-## 📋 Índice
-
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Tecnologias](#-tecnologias)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Instalação](#-instalação)
-- [Configuração](#-configuração)
-- [Como Usar](#-como-usar)
-- [API Endpoints](#-api-endpoints)
-- [Arquitetura](#-arquitetura)
-- [Scripts](#-scripts)
-
 ## 🎯 Sobre o Projeto
 
 Teste técnico desenvolvido para demonstrar habilidades em desenvolvimento full-stack. Sistema de Lead Scoring que utiliza IA para analisar mensagens e comportamento, gerando:
