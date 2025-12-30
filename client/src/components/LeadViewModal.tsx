@@ -1,4 +1,5 @@
 import React from 'react';
+import { X, Edit, User, Mail, Phone, MapPin, Lightbulb, Timer, MessageCircle, Calendar, Bot, Circle } from 'lucide-react';
 import type { Lead } from '../types/lead.types';
 import { getClassificationColor, getScoreColor, formatResponseTimeDetailed } from '../utils/lead.utils';
 import { formatDateTimeFull } from '../utils/date.utils';
@@ -26,16 +27,15 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                 <div className="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                     {/* Header */}
                     <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
-                        <h3 className="text-2xl font-bold text-gray-900">
-                            👤 Detalhes do Lead
+                        <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                            <User className="w-6 h-6" />
+                            Detalhes do Lead
                         </h3>
                         <button
                             onClick={onClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            <X className="w-6 h-6" />
                         </button>
                     </div>
 
@@ -52,10 +52,9 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                                                 lead.classification
                                             )}`}
                                         >
-                                            {lead.classification === 'Quente' && '🟢'}
-                                            {lead.classification === 'Morno' && '🟡'}
-                                            {lead.classification === 'Frio' && '🔴'}
-                                            {' '}
+                                            {lead.classification === 'Quente' && <Circle className="w-3 h-3 inline-block text-green-500 fill-green-500 mr-1" />}
+                                            {lead.classification === 'Morno' && <Circle className="w-3 h-3 inline-block text-yellow-500 fill-yellow-500 mr-1" />}
+                                            {lead.classification === 'Frio' && <Circle className="w-3 h-3 inline-block text-red-500 fill-red-500 mr-1" />}
                                             {lead.classification}
                                         </span>
                                     )}
@@ -85,7 +84,7 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                                 <div className="space-y-2">
                                     {lead.email && (
                                         <div className="flex items-center gap-2 text-gray-700">
-                                            <span className="text-lg">📧</span>
+                                            <Mail className="w-4 h-4" />
                                             <a href={`mailto:${lead.email}`} className="hover:text-blue-600 hover:underline">
                                                 {lead.email}
                                             </a>
@@ -93,7 +92,7 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                                     )}
                                     {lead.phone && (
                                         <div className="flex items-center gap-2 text-gray-700">
-                                            <span className="text-lg">📱</span>
+                                            <Phone className="w-4 h-4" />
                                             <a href={`tel:${lead.phone}`} className="hover:text-blue-600 hover:underline">
                                                 {lead.phone}
                                             </a>
@@ -105,7 +104,7 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                             <div className="bg-gray-50 rounded-lg p-4">
                                 <h4 className="text-sm font-semibold text-gray-500 uppercase mb-3">Origem</h4>
                                 <div className="flex items-center gap-2 text-gray-700">
-                                    <span className="text-lg">📍</span>
+                                    <MapPin className="w-4 h-4" />
                                     <span>{lead.origin}</span>
                                 </div>
                             </div>
@@ -123,7 +122,8 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                         {lead.scoreReason && (
                             <div className="mb-6">
                                 <h4 className="text-sm font-semibold text-gray-500 uppercase mb-3 flex items-center gap-2">
-                                    <span>💡</span> Análise da IA
+                                    <Lightbulb className="w-4 h-4" />
+                                    Análise da IA
                                 </h4>
                                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                                     <p className="text-gray-800">{lead.scoreReason}</p>
@@ -134,17 +134,26 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                         {/* Métricas */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                             <div className="bg-gray-50 rounded-lg p-4">
-                                <div className="text-sm text-gray-500 mb-1">⏱️ Tempo de Resposta</div>
+                                <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                    <Timer className="w-4 h-4" />
+                                    Tempo de Resposta
+                                </div>
                                 <div className="text-lg font-semibold text-gray-900">
                                     {formatResponseTimeDetailed(lead.responseTime)}
                                 </div>
                             </div>
                             <div className="bg-gray-50 rounded-lg p-4">
-                                <div className="text-sm text-gray-500 mb-1">💬 Interações</div>
+                                <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                    <MessageCircle className="w-4 h-4" />
+                                    Interações
+                                </div>
                                 <div className="text-lg font-semibold text-gray-900">{lead.interactions || 0}</div>
                             </div>
                             <div className="bg-gray-50 rounded-lg p-4">
-                                <div className="text-sm text-gray-500 mb-1">📅 Criado em</div>
+                                <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                    <Calendar className="w-4 h-4" />
+                                    Criado em
+                                </div>
                                 <div className="text-lg font-semibold text-gray-900">
                                     {formatDateTimeFull(lead.createdAt)}
                                 </div>
@@ -154,7 +163,10 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                         {/* Data de Análise */}
                         {lead.analyzedAt && (
                             <div className="mb-6">
-                                <div className="text-sm text-gray-500 mb-1">🤖 Última análise em</div>
+                                <div className="text-sm text-gray-500 mb-1 flex items-center gap-1">
+                                    <Bot className="w-4 h-4" />
+                                    Última análise em
+                                </div>
                                 <div className="text-base text-gray-700">{formatDateTimeFull(lead.analyzedAt)}</div>
                             </div>
                         )}
@@ -168,9 +180,7 @@ export function LeadViewModal({ isOpen, onClose, lead, onEdit }: LeadViewModalPr
                                 }}
                                 className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2"
                             >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
+                                <Edit className="w-5 h-5" />
                                 Editar Lead
                             </button>
                             <button

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown, X } from 'lucide-react';
 import { useTimePicker } from '../hooks/useTimePicker';
 
 interface TimePickerProps {
@@ -48,17 +49,10 @@ export function TimePicker({ value, onChange, placeholder = 'Selecione o tempo' 
               onClick={handleClear}
               className="text-gray-400 hover:text-gray-600"
             >
-              ✕
+              <X className="w-4 h-4" />
             </button>
           )}
-          <svg
-            className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </div>
       </div>
 

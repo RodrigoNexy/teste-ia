@@ -1,5 +1,6 @@
 import type { Lead } from '../types/lead.types';
 import React from 'react';
+import { Mail, Phone, MapPin, Circle, Lightbulb, Timer, MessageCircle, BarChart3, Bot, Edit, Trash2 } from 'lucide-react';
 import { getClassificationColor, getScoreColor } from '../utils/lead.utils';
 
 interface LeadListProps {
@@ -30,9 +31,9 @@ export function LeadList({ leads, onEdit, onDelete, onAnalyze }: LeadListProps) 
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-gray-900">{lead.name}</h3>
               <div className="flex flex-wrap gap-2 mt-2 text-sm text-gray-600">
-                {lead.email && <span>📧 {lead.email}</span>}
-                {lead.phone && <span>📱 {lead.phone}</span>}
-                <span>📍 {lead.origin}</span>
+                {lead.email && <span className="flex items-center gap-1"><Mail className="w-4 h-4" /> {lead.email}</span>}
+                {lead.phone && <span className="flex items-center gap-1"><Phone className="w-4 h-4" /> {lead.phone}</span>}
+                <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {lead.origin}</span>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -50,10 +51,9 @@ export function LeadList({ leads, onEdit, onDelete, onAnalyze }: LeadListProps) 
                     lead.classification
                   )}`}
                 >
-                  {lead.classification === 'Quente' && '🟢'}
-                  {lead.classification === 'Morno' && '🟡'}
-                  {lead.classification === 'Frio' && '🔴'}
-                  {' '}
+                  {lead.classification === 'Quente' && <Circle className="w-3 h-3 inline-block text-green-500 fill-green-500 mr-1" />}
+                  {lead.classification === 'Morno' && <Circle className="w-3 h-3 inline-block text-yellow-500 fill-yellow-500 mr-1" />}
+                  {lead.classification === 'Frio' && <Circle className="w-3 h-3 inline-block text-red-500 fill-red-500 mr-1" />}
                   {lead.classification}
                 </span>
               )}
@@ -67,18 +67,18 @@ export function LeadList({ leads, onEdit, onDelete, onAnalyze }: LeadListProps) 
           {lead.scoreReason && (
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
               <p className="text-sm text-blue-900">
-                <strong>💡 Análise:</strong> {lead.scoreReason}
+                <strong className="flex items-center gap-1"><Lightbulb className="w-4 h-4" /> Análise:</strong> {lead.scoreReason}
               </p>
             </div>
           )}
 
           <div className="flex flex-wrap gap-2 text-sm text-gray-500 mb-4">
             {lead.responseTime !== null && lead.responseTime !== undefined && (
-              <span>⏱️ {lead.responseTime}h de resposta</span>
+              <span className="flex items-center gap-1"><Timer className="w-4 h-4" /> {lead.responseTime}h de resposta</span>
             )}
-            <span>💬 {lead.interactions} interações</span>
+            <span className="flex items-center gap-1"><MessageCircle className="w-4 h-4" /> {lead.interactions} interações</span>
             {lead.analyzedAt && (
-              <span>📊 Analisado em {new Date(lead.analyzedAt).toLocaleDateString('pt-BR')}</span>
+              <span className="flex items-center gap-1"><BarChart3 className="w-4 h-4" /> Analisado em {new Date(lead.analyzedAt).toLocaleDateString('pt-BR')}</span>
             )}
           </div>
 
@@ -86,22 +86,25 @@ export function LeadList({ leads, onEdit, onDelete, onAnalyze }: LeadListProps) 
             {(!lead.score || !lead.classification) && (
               <button
                 onClick={() => onAnalyze(lead.id)}
-                className="px-3 py-1.5 text-sm bg-purple-600 text-white rounded-md hover:bg-purple-700"
+                className="px-3 py-1.5 text-sm bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-1"
               >
-                🤖 Analisar com IA
+                <Bot className="w-4 h-4" />
+                Analisar com IA
               </button>
             )}
             <button
               onClick={() => onEdit(lead)}
-              className="px-3 py-1.5 text-sm text-blue-600 hover:text-blue-900"
+              className="px-3 py-1.5 text-sm text-blue-600 hover:text-blue-900 flex items-center gap-1"
             >
-              ✏️ Editar
+              <Edit className="w-4 h-4" />
+              Editar
             </button>
             <button
               onClick={() => onDelete(lead.id)}
-              className="px-3 py-1.5 text-sm text-red-600 hover:text-red-900"
+              className="px-3 py-1.5 text-sm text-red-600 hover:text-red-900 flex items-center gap-1"
             >
-              🗑️ Excluir
+              <Trash2 className="w-4 h-4" />
+              Excluir
             </button>
           </div>
         </div>

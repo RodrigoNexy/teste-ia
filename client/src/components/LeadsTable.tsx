@@ -1,4 +1,5 @@
 import React from 'react';
+import { Bot, Search, Edit, Trash2, Circle } from 'lucide-react';
 import type { Lead } from '../types/lead.types';
 import { getClassificationColor, getScoreColor, getStatusColor, formatResponseTime } from '../utils/lead.utils';
 import { formatDate } from '../utils/date.utils';
@@ -99,10 +100,9 @@ export function LeadsTable({ leads, onEdit, onDelete, onExpand, onAnalyze, loadi
                                                 lead.classification
                                             )}`}
                                         >
-                                            {lead.classification === 'Quente' && '🟢'}
-                                            {lead.classification === 'Morno' && '🟡'}
-                                            {lead.classification === 'Frio' && '🔴'}
-                                            {' '}
+                                            {lead.classification === 'Quente' && <Circle className="w-3 h-3 inline-block text-green-500 fill-green-500 mr-1" />}
+                                            {lead.classification === 'Morno' && <Circle className="w-3 h-3 inline-block text-yellow-500 fill-yellow-500 mr-1" />}
+                                            {lead.classification === 'Frio' && <Circle className="w-3 h-3 inline-block text-red-500 fill-red-500 mr-1" />}
                                             {lead.classification}
                                         </span>
                                     ) : (
@@ -135,7 +135,7 @@ export function LeadsTable({ leads, onEdit, onDelete, onExpand, onAnalyze, loadi
                                                 className="text-purple-600 hover:text-purple-900"
                                                 title="Analisar"
                                             >
-                                                🤖
+                                                <Bot className="w-5 h-5" />
                                             </button>
                                         )}
                                         <button
@@ -143,21 +143,21 @@ export function LeadsTable({ leads, onEdit, onDelete, onExpand, onAnalyze, loadi
                                             className="text-green-600 hover:text-green-900"
                                             title="Expandir"
                                         >
-                                            🔍
+                                            <Search className="w-5 h-5" />
                                         </button>
                                         <button
                                             onClick={() => onEdit(lead)}
                                             className="text-blue-600 hover:text-blue-900"
                                             title="Editar"
                                         >
-                                            ✏️
+                                            <Edit className="w-5 h-5" />
                                         </button>
                                         <button
                                             onClick={() => onDelete(lead.id)}
                                             className="text-red-600 hover:text-red-900"
                                             title="Excluir"
                                         >
-                                            🗑️
+                                            <Trash2 className="w-5 h-5" />
                                         </button>
                                     </div>
                                 </td>

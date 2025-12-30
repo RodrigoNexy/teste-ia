@@ -1,4 +1,5 @@
 import React from 'react';
+import { X, Edit, Plus } from 'lucide-react';
 import { LeadForm } from './LeadForm';
 import type { Lead } from '../types/lead.types';
 
@@ -33,16 +34,24 @@ export function LeadModal({ isOpen, onClose, lead, onSubmit }: LeadModalProps) {
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-4 sm:align-middle sm:max-w-6xl sm:w-full max-h-[95vh] overflow-y-auto">
           <div className="bg-white h-[900px] px-8 pt-6 pb-8">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-gray-900">
-                {lead ? '✏️ Editar Lead' : '➕ Novo Lead'}
+              <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                {lead ? (
+                  <>
+                    <Edit className="w-6 h-6" />
+                    Editar Lead
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-6 h-6" />
+                    Novo Lead
+                  </>
+                )}
               </h3>
               <button
                 onClick={onClose}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="w-6 h-6" />
               </button>
             </div>
             <LeadForm

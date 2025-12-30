@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ClipboardList, BarChart3, TrendingUp, Settings } from 'lucide-react';
 import { LeadKanban } from './components/LeadKanban';
 import { LeadModal } from './components/LeadModal';
 import { LeadViewModal } from './components/LeadViewModal';
@@ -46,8 +47,9 @@ function App() {
                         {/* Kanban de Leads */}
                         <div className="bg-white rounded-lg shadow-md p-6 mt-6">
                             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
-                                <h2 className="text-2xl font-semibold text-gray-800">
-                                    📋 Kanban de Leads
+                                <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                                    <ClipboardList className="w-6 h-6" />
+                                    Kanban de Leads
                                 </h2>
                                 <div className="text-sm text-gray-500">
                                     {stats && `Score médio: ${stats.averageScore}`}
@@ -76,8 +78,9 @@ function App() {
                 return (
                     <div className="bg-white rounded-lg shadow-md p-6 flex flex-col overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
                         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 flex-shrink-0">
-                            <h2 className="text-2xl font-semibold text-gray-800">
-                                📊 Lista de Leads
+                            <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                                <BarChart3 className="w-6 h-6" />
+                                Lista de Leads
                             </h2>
                             <div className="text-sm text-gray-500">
                                 Total: {leads.length} leads
@@ -99,8 +102,9 @@ function App() {
                 return (
                     <div className="bg-white rounded-lg shadow-md p-6">
                         <div className="mb-6 pb-4 border-b border-gray-200">
-                            <h2 className="text-2xl font-semibold text-gray-800">
-                                📈 Análises e Relatórios
+                            <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
+                                <TrendingUp className="w-6 h-6" />
+                                Análises e Relatórios
                             </h2>
                             <p className="text-gray-600 mt-1">
                                 Visualize métricas e tendências dos seus leads
@@ -112,8 +116,9 @@ function App() {
             case 'settings':
                 return (
                     <div className="bg-white rounded-lg shadow-md p-6">
-                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                            ⚙️ Configurações
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <Settings className="w-6 h-6" />
+                            Configurações
                         </h2>
                         <p className="text-gray-600">Página de configurações em desenvolvimento...</p>
                     </div>

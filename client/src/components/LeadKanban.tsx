@@ -1,4 +1,5 @@
 import React from 'react';
+import { Mail, Phone, MapPin, Circle, Lightbulb, Timer, MessageCircle, Bot, Search, Edit, Trash2 } from 'lucide-react';
 import type { Lead, LeadStatus } from '../types/lead.types';
 import { useLeadKanban } from '../hooks/useLeadKanban';
 import { getClassificationColor, getScoreColor } from '../utils/lead.utils';
@@ -68,9 +69,9 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
         </div>
 
         <div className="text-xs text-gray-600 mb-2 space-y-1">
-          {lead.email && <div>📧 {lead.email}</div>}
-          {lead.phone && <div>📱 {lead.phone}</div>}
-          <div>📍 {lead.origin}</div>
+          {lead.email && <div className="flex items-center gap-1"><Mail className="w-3 h-3" /> {lead.email}</div>}
+          {lead.phone && <div className="flex items-center gap-1"><Phone className="w-3 h-3" /> {lead.phone}</div>}
+          <div className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {lead.origin}</div>
         </div>
 
         <p className="text-xs text-gray-700 mb-3 line-clamp-2">{lead.message}</p>
@@ -82,10 +83,9 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
                 lead.classification
               )}`}
             >
-              {lead.classification === 'Quente' && '🟢'}
-              {lead.classification === 'Morno' && '🟡'}
-              {lead.classification === 'Frio' && '🔴'}
-              {' '}
+              {lead.classification === 'Quente' && <Circle className="w-3 h-3 inline-block text-green-500 fill-green-500 mr-1" />}
+              {lead.classification === 'Morno' && <Circle className="w-3 h-3 inline-block text-yellow-500 fill-yellow-500 mr-1" />}
+              {lead.classification === 'Frio' && <Circle className="w-3 h-3 inline-block text-red-500 fill-red-500 mr-1" />}
               {lead.classification}
             </span>
           </div>
@@ -93,15 +93,15 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
 
         {lead.scoreReason && (
           <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-900">
-            <strong>💡 Análise:</strong> {lead.scoreReason}
+            <strong className="flex items-center gap-1"><Lightbulb className="w-3 h-3" /> Análise:</strong> {lead.scoreReason}
           </div>
         )}
 
         <div className="flex flex-wrap gap-1 text-xs text-gray-500 mb-3">
           {lead.responseTime !== null && lead.responseTime !== undefined && (
-            <span>⏱️ {lead.responseTime}h</span>
+            <span className="flex items-center gap-1"><Timer className="w-3 h-3" /> {lead.responseTime}h</span>
           )}
-          <span>💬 {lead.interactions}</span>
+          <span className="flex items-center gap-1"><MessageCircle className="w-3 h-3" /> {lead.interactions}</span>
         </div>
 
         <div className="flex gap-1 flex-wrap" onClick={(e) => e.stopPropagation()}>
@@ -111,9 +111,10 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
                 e.stopPropagation();
                 onAnalyze(lead.id);
               }}
-              className="px-2 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+              className="px-2 py-1 text-xs bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors flex items-center gap-1"
             >
-              🤖 Analisar
+              <Bot className="w-3 h-3" />
+              Analisar
             </button>
           )}
           <button
@@ -121,27 +122,30 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange,
               e.stopPropagation();
               onExpand(lead);
             }}
-            className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors flex items-center gap-1"
           >
-            🔍 Expandir
+            <Search className="w-3 h-3" />
+            Expandir
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit(lead);
             }}
-            className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-1"
           >
-            ✏️ Editar
+            <Edit className="w-3 h-3" />
+            Editar
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
               onDelete(lead.id);
             }}
-            className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+            className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors flex items-center gap-1"
           >
-            🗑️ Excluir
+            <Trash2 className="w-3 h-3" />
+            Excluir
           </button>
         </div>
       </div>

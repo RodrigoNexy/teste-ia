@@ -1,4 +1,5 @@
 import React from 'react';
+import { BarChart3, Circle } from 'lucide-react';
 import type { LeadStats } from '../types/lead.types';
 
 interface LeadStatsProps {
@@ -12,7 +13,10 @@ export function LeadStats({ stats }: LeadStatsProps) {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-semibold text-gray-700 mb-4">📊 Estatísticas</h2>
+      <h2 className="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <BarChart3 className="w-5 h-5" />
+        Estatísticas
+      </h2>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="text-center">
           <div className="text-3xl font-bold text-gray-900">{stats.total}</div>
@@ -20,15 +24,24 @@ export function LeadStats({ stats }: LeadStatsProps) {
         </div>
         <div className="text-center">
           <div className="text-3xl font-bold text-green-600">{stats.quente}</div>
-          <div className="text-sm text-gray-500">🟢 Quente ({quentePercent}%)</div>
+          <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+            <Circle className="w-3 h-3 text-green-500 fill-green-500" />
+            Quente ({quentePercent}%)
+          </div>
         </div>
         <div className="text-center">
           <div className="text-3xl font-bold text-yellow-600">{stats.morno}</div>
-          <div className="text-sm text-gray-500">🟡 Morno ({mornoPercent}%)</div>
+          <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+            <Circle className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+            Morno ({mornoPercent}%)
+          </div>
         </div>
         <div className="text-center">
           <div className="text-3xl font-bold text-red-600">{stats.frio}</div>
-          <div className="text-sm text-gray-500">🔴 Frio ({frioPercent}%)</div>
+          <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+            <Circle className="w-3 h-3 text-red-500 fill-red-500" />
+            Frio ({frioPercent}%)
+          </div>
         </div>
         <div className="text-center">
           <div className="text-3xl font-bold text-blue-600">{stats.averageScore}</div>
