@@ -22,7 +22,7 @@ export function LeadModal({ isOpen, onClose, lead, onSubmit }: LeadModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-start justify-center min-h-screen px-4 pt-4 pb-4 text-center sm:block sm:p-0">
         {/* Overlay */}
         <div
           className="fixed inset-0 transition-opacity bg-gray-900 bg-opacity-75"
@@ -30,8 +30,8 @@ export function LeadModal({ isOpen, onClose, lead, onSubmit }: LeadModalProps) {
         />
 
         {/* Modal */}
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
-          <div className="bg-white px-6 pt-6 pb-4">
+        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-4 sm:align-middle sm:max-w-6xl sm:w-full max-h-[95vh] overflow-y-auto">
+          <div className="bg-white h-[900px] px-8 pt-6 pb-8">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-gray-900">
                 {lead ? '✏️ Editar Lead' : '➕ Novo Lead'}

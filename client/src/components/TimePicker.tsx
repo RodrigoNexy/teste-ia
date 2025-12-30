@@ -199,7 +199,7 @@ export function TimePicker({ value, onChange, placeholder = 'Selecione o tempo' 
       </div>
 
       {isOpen && (
-        <div className={`absolute z-50 bg-white border border-gray-300 rounded-md shadow-lg p-4 w-full min-w-[320px] ${
+        <div className={`absolute z-50 bg-white border border-gray-300 rounded-md shadow-lg p-4 w-full min-w-[400px] max-w-[500px] ${
           opensUpward ? 'bottom-full mb-1' : 'top-full mt-1'
         }`}>
           <div className="space-y-4">
@@ -235,7 +235,7 @@ export function TimePicker({ value, onChange, placeholder = 'Selecione o tempo' 
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Dias
                   </label>
-                  <div className="grid grid-cols-8 gap-1 max-h-32 overflow-y-auto">
+                  <div className="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto">
                     {Array.from({ length: 31 }, (_, i) => (
                       <button
                         key={i}
@@ -257,7 +257,7 @@ export function TimePicker({ value, onChange, placeholder = 'Selecione o tempo' 
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Horas
                   </label>
-                  <div className="grid grid-cols-8 gap-1 max-h-32 overflow-y-auto">
+                  <div className="grid grid-cols-8 gap-1 max-h-48 overflow-y-auto">
                     {Array.from({ length: 24 }, (_, i) => (
                       <button
                         key={i}
@@ -279,7 +279,7 @@ export function TimePicker({ value, onChange, placeholder = 'Selecione o tempo' 
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Minutos
                   </label>
-                  <div className="grid grid-cols-10 gap-1 max-h-32 overflow-y-auto">
+                  <div className="grid grid-cols-10 gap-1 max-h-48 overflow-y-auto">
                     {Array.from({ length: 60 }, (_, i) => (
                       <button
                         key={i}
