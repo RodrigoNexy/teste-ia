@@ -24,7 +24,8 @@ Teste técnico desenvolvido para demonstrar habilidades em desenvolvimento full-
 - Gestão visual via Kanban board
 - Analytics e métricas
 
-<!-- [SCREENSHOT: Tela inicial/Dashboard completo] -->
+<img width="1878" height="1664" alt="image" src="https://github.com/user-attachments/assets/eedd5f69-1865-4d9a-867f-1e34b4a07055" />
+
 
 ## 🛠️ Tecnologias
 
@@ -109,8 +110,6 @@ npm run dev:client      # Apenas frontend
 
 Acesse: **http://localhost:3000**
 
-<!-- [SCREENSHOT: Interface principal - Sidebar e layout geral] -->
-
 ### Funcionalidades
 
 - **Dashboard**: Estatísticas e Kanban board com drag-and-drop
@@ -118,10 +117,6 @@ Acesse: **http://localhost:3000**
 - **Análises**: Gráficos de distribuição, evolução e métricas
 - **Análise IA**: Automática ao criar/atualizar leads
 - **Re-análise**: Manual via botão de ação
-
-<!-- [SCREENSHOT: Dashboard com estatísticas e Kanban board] -->
-<!-- [SCREENSHOT: Tabela de leads com ações] -->
-<!-- [SCREENSHOT: Página de análises com gráficos] -->
 
 ## 📡 API Endpoints
 
@@ -150,8 +145,7 @@ POST   /api/leads/:id/analyze  # Re-analisar manualmente
 }
 ```
 
-<!-- [SCREENSHOT: Modal de criação de lead - formulário] -->
-<!-- [SCREENSHOT: Modal de visualização de lead com análise da IA] -->
+<img width="1878" height="1664" alt="image" src="https://github.com/user-attachments/assets/569be429-2ad1-4b91-9f9e-8a2c0db854b1" />
 
 ### Usuários
 
@@ -190,7 +184,8 @@ POST /api/groq/completion  # Completion simples
 - DRY (Don't Repeat Yourself)
 - Component Composition
 
-<!-- [SCREENSHOT: Exemplo de código mostrando arquitetura - estrutura de pastas ou código] -->
+<img width="274" height="907" alt="image" src="https://github.com/user-attachments/assets/f88f1341-c30f-4ea8-aa81-0e76a068508d" />
+
 
 ## 📜 Scripts
 
@@ -236,8 +231,7 @@ npm run prisma:generate
 - Pare processos nas portas 3000/3001
 - Ou altere portas em `src/server.ts` e `vite.config.ts`
 
-<!-- [SCREENSHOT: Kanban board em ação - drag and drop] -->
-<!-- [SCREENSHOT: Detalhes de um lead com score e classificação] -->
+<img width="1878" height="1664" alt="image" src="https://github.com/user-attachments/assets/acf11c11-ccc0-42f9-b4c3-be02375b446a" />
 
 ## 📝 Sobre o Teste Técnico
 
@@ -265,9 +259,8 @@ Desenvolvido para avaliação de competências em:
 - **Modelo IA**: `llama-3.3-70b-versatile` (Groq)
 - **Banco**: PostgreSQL (Neon.tech)
 - **Portas**: Backend (3001), Frontend (3000)
-- **Hot Reload**: Habilitado em desenvolvimento
 
-<!-- [SCREENSHOT: Gráficos de análise - distribuições e evolução] -->
-<!-- [SCREENSHOT: TimePicker customizado em ação] -->
+<img width="1930" height="941" alt="image" src="https://github.com/user-attachments/assets/53413a71-0975-4ece-ae16-46505a60f7f4" />
+<img width="1878" height="1593" alt="image" src="https://github.com/user-attachments/assets/99b7dcd5-5560-429f-8a0f-e307aa9fce9c" />
 
 ---
