@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { LeadKanban } from './components/LeadKanban';
 import { LeadModal } from './components/LeadModal';
+import { LeadViewModal } from './components/LeadViewModal';
 import { DashboardStats } from './components/DashboardStats';
+import { Sidebar } from './components/Sidebar';
 import { LeadService } from './services/lead.service';
 import type { Lead, LeadStats as LeadStatsType, LeadStatus } from './types/lead.types';
 
@@ -9,7 +11,9 @@ function App() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [stats, setStats] = useState<LeadStatsType | null>(null);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const [viewingLead, setViewingLead] = useState<Lead | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const leadService = new LeadService();
 
@@ -113,6 +117,11 @@ function App() {
     setIsModalOpen(true);
   };
 
+  const handleExpand = (lead: Lead) => {
+    setViewingLead(lead);
+    setIsViewModalOpen(true);
+  };
+
   const handleNewLead = () => {
     setEditingLead(null);
     setIsModalOpen(true);
@@ -123,12 +132,21 @@ function App() {
     setEditingLead(null);
   };
 
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setViewingLead(null);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <Sidebar onNewLead={handleNewLead} currentPage="dashboard" />
+
+      {/* Main Content */}
+      <div className="flex-1 ml-64">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
+          <div className="px-6 py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
                 🔥 Lead Scoring com IA
@@ -137,26 +155,16 @@ function App() {
                 Sistema inteligente de qualificação de leads usando Groq AI
               </p>
             </div>
-            <button
-              onClick={handleNewLead}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors flex items-center gap-2 font-semibold"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Novo Lead
-            </button>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Estatísticas */}
-        {stats && <DashboardStats stats={stats} />}
+        {/* Main Content */}
+        <main className="px-6 py-8">
+          {/* Estatísticas */}
+          {stats && <DashboardStats stats={stats} />}
 
-        {/* Kanban de Leads */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+          {/* Kanban de Leads */}
+          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
           <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
             <h2 className="text-2xl font-semibold text-gray-800">
               📋 Kanban de Leads
@@ -178,17 +186,27 @@ function App() {
               onDelete={handleDelete}
               onAnalyze={handleAnalyze}
               onStatusChange={handleStatusChange}
+              onExpand={handleExpand}
             />
           )}
-        </div>
-      </main>
+          </div>
+        </main>
+      </div>
 
-      {/* Modal */}
+      {/* Modal de Edição/Criação */}
       <LeadModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         lead={editingLead}
         onSubmit={editingLead ? (data) => handleUpdate(editingLead.id, data) : handleCreate}
+      />
+
+      {/* Modal de Visualização */}
+      <LeadViewModal
+        isOpen={isViewModalOpen}
+        onClose={handleCloseViewModal}
+        lead={viewingLead}
+        onEdit={handleEdit}
       />
     </div>
   );

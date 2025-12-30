@@ -7,6 +7,7 @@ interface LeadKanbanProps {
   onDelete: (id: string) => void;
   onAnalyze: (id: string) => void;
   onStatusChange: (id: string, status: LeadStatus) => void;
+  onExpand: (lead: Lead) => void;
 }
 
 const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bgColor: string; borderColor: string }> = {
@@ -30,7 +31,7 @@ const STATUS_CONFIG: Record<LeadStatus, { label: string; color: string; bgColor:
   },
 };
 
-export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange }: LeadKanbanProps) {
+export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange, onExpand }: LeadKanbanProps) {
   const [draggedLead, setDraggedLead] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<LeadStatus | null>(null);
 
@@ -85,7 +86,7 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const x = e.clientX;
     const y = e.clientY;
-    
+
     if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
       setDragOverColumn(null);
     }
@@ -94,9 +95,9 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
   const handleDrop = (e: React.DragEvent, targetStatus: LeadStatus) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     let leadId: string | null = null;
-    
+
     // Tenta pegar o ID de diferentes formas
     try {
       const jsonData = e.dataTransfer.getData('application/json');
@@ -107,11 +108,11 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
     } catch (err) {
       // Ignora erro de parsing
     }
-    
+
     if (!leadId) {
       leadId = e.dataTransfer.getData('text/plain');
     }
-    
+
     if (leadId) {
       const currentLead = leads.find(l => l.id === leadId);
       if (currentLead && currentLead.status !== targetStatus) {
@@ -121,7 +122,7 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
     } else {
       console.error('No lead ID found in drop event');
     }
-    
+
     setDraggedLead(null);
   };
 
@@ -135,16 +136,15 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
 
   const renderLeadCard = (lead: Lead) => {
     const isDragging = draggedLead === lead.id;
-    
+
     return (
       <div
         key={lead.id}
         draggable={true}
         onDragStart={(e) => handleDragStart(e, lead.id)}
         onDragEnd={handleDragEnd}
-        className={`bg-white border border-gray-300 rounded-lg p-4 mb-3 cursor-move transition-all hover:border-gray-400 hover:shadow-md ${
-          isDragging ? 'opacity-50 scale-95' : 'opacity-100'
-        }`}
+        className={`bg-white border border-gray-300 rounded-lg p-4 mb-3 cursor-move transition-all hover:border-gray-400 hover:shadow-md ${isDragging ? 'opacity-50 scale-95' : 'opacity-100'
+          }`}
       >
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-semibold text-gray-900 text-sm">{lead.name}</h3>
@@ -207,6 +207,15 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
           <button
             onClick={(e) => {
               e.stopPropagation();
+              onExpand(lead);
+            }}
+            className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          >
+            🔍 Expandir
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
               onEdit(lead);
             }}
             className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
@@ -236,9 +245,8 @@ export function LeadKanban({ leads, onEdit, onDelete, onAnalyze, onStatusChange 
         return (
           <div
             key={status}
-            className={`${config.bgColor} border-2 ${config.borderColor} rounded-lg p-4 min-h-[600px] transition-all ${
-              dragOverColumn === statusKey ? 'ring-4 ring-opacity-50 ring-offset-2 ring-offset-white' : ''
-            }`}
+            className={`${config.bgColor} border-2 ${config.borderColor} rounded-lg p-4 min-h-[600px] transition-all ${dragOverColumn === statusKey ? 'ring-4 ring-opacity-50 ring-offset-2 ring-offset-white' : ''
+              }`}
             onDragOver={(e) => handleDragOver(e, statusKey)}
             onDragLeave={handleDragLeave}
             onDrop={(e) => {
