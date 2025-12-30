@@ -1,215 +1,159 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LeadKanban } from './components/LeadKanban';
 import { LeadModal } from './components/LeadModal';
 import { LeadViewModal } from './components/LeadViewModal';
 import { DashboardStats } from './components/DashboardStats';
+import { LeadsTable } from './components/LeadsTable';
+import { AnalyticsPage } from './components/AnalyticsPage';
 import { Sidebar } from './components/Sidebar';
-import { LeadService } from './services/lead.service';
-import type { Lead, LeadStats as LeadStatsType, LeadStatus } from './types/lead.types';
+import { useLeads } from './hooks/useLeads';
 
 function App() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [stats, setStats] = useState<LeadStatsType | null>(null);
-  const [editingLead, setEditingLead] = useState<Lead | null>(null);
-  const [viewingLead, setViewingLead] = useState<Lead | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const leadService = new LeadService();
+    const [currentPage, setCurrentPage] = useState('dashboard');
 
-  const loadLeads = async () => {
-    setLoading(true);
-    try {
-      const [leadsData, statsData] = await Promise.all([
-        leadService.getAll(),
-        leadService.getStats(),
-      ]);
-      setLeads(leadsData);
-      setStats(statsData);
-    } catch (error) {
-      console.error('Error loading leads:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const {
+        leads,
+        stats,
+        editingLead,
+        viewingLead,
+        isModalOpen,
+        isViewModalOpen,
+        loading,
+        handleCreate,
+        handleUpdate,
+        handleDelete,
+        handleAnalyze,
+        handleStatusChange,
+        handleEdit,
+        handleExpand,
+        handleNewLead,
+        handleCloseModal,
+        handleCloseViewModal,
+    } = useLeads();
 
-  useEffect(() => {
-    loadLeads();
-  }, []);
+    const handlePageChange = (page: string) => {
+        setCurrentPage(page);
+    };
 
-  const handleCreate = async (data: {
-    name: string;
-    email?: string;
-    phone?: string;
-    message: string;
-    origin: string;
-    responseTime?: number;
-    interactions?: number;
-  }) => {
-    try {
-      await leadService.create(data);
-      await loadLeads();
-      setIsModalOpen(false);
-      setEditingLead(null);
-    } catch (error) {
-      console.error('Error creating lead:', error);
-      throw error;
-    }
-  };
+    const renderPageContent = () => {
+        switch (currentPage) {
+            case 'dashboard':
+                return (
+                    <>
+                        {/* Estatísticas */}
+                        {stats && <DashboardStats stats={stats} />}
 
-  const handleUpdate = async (
-    id: string,
-    data: {
-      name: string;
-      email?: string;
-      phone?: string;
-      message: string;
-      origin: string;
-      responseTime?: number;
-      interactions?: number;
-      status?: LeadStatus;
-    }
-  ) => {
-    try {
-      await leadService.update(id, data);
-      await loadLeads();
-      setIsModalOpen(false);
-      setEditingLead(null);
-    } catch (error) {
-      console.error('Error updating lead:', error);
-      throw error;
-    }
-  };
+                        {/* Kanban de Leads */}
+                        <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+                            <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+                                <h2 className="text-2xl font-semibold text-gray-800">
+                                    📋 Kanban de Leads
+                                </h2>
+                                <div className="text-sm text-gray-500">
+                                    {stats && `Score médio: ${stats.averageScore}`}
+                                </div>
+                            </div>
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Tem certeza que deseja excluir este lead?')) {
-      return;
-    }
-    try {
-      await leadService.delete(id);
-      await loadLeads();
-    } catch (error) {
-      console.error('Error deleting lead:', error);
-    }
-  };
+                            {loading ? (
+                                <div className="text-center py-12">
+                                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                    <p className="text-gray-500 mt-4">Carregando leads...</p>
+                                </div>
+                            ) : (
+                                <LeadKanban
+                                    leads={leads}
+                                    onEdit={handleEdit}
+                                    onDelete={handleDelete}
+                                    onAnalyze={handleAnalyze}
+                                    onStatusChange={handleStatusChange}
+                                    onExpand={handleExpand}
+                                />
+                            )}
+                        </div>
+                    </>
+                );
+            case 'leads':
+                return (
+                    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col overflow-hidden" style={{ height: 'calc(100vh - 200px)' }}>
+                        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 flex-shrink-0">
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                                📊 Lista de Leads
+                            </h2>
+                            <div className="text-sm text-gray-500">
+                                Total: {leads.length} leads
+                            </div>
+                        </div>
+                        <div className="flex-1 min-h-0 overflow-hidden">
+                            <LeadsTable
+                                leads={leads}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                                onExpand={handleExpand}
+                                onAnalyze={handleAnalyze}
+                                loading={loading}
+                            />
+                        </div>
+                    </div>
+                );
+            case 'analytics':
+                return (
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="mb-6 pb-4 border-b border-gray-200">
+                            <h2 className="text-2xl font-semibold text-gray-800">
+                                📈 Análises e Relatórios
+                            </h2>
+                            <p className="text-gray-600 mt-1">
+                                Visualize métricas e tendências dos seus leads
+                            </p>
+                        </div>
+                        <AnalyticsPage leads={leads} stats={stats} />
+                    </div>
+                );
+            case 'settings':
+                return (
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                            ⚙️ Configurações
+                        </h2>
+                        <p className="text-gray-600">Página de configurações em desenvolvimento...</p>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
 
-  const handleAnalyze = async (id: string) => {
-    try {
-      await leadService.analyze(id);
-      await loadLeads();
-    } catch (error) {
-      console.error('Error analyzing lead:', error);
-      alert('Erro ao analisar lead. Tente novamente.');
-    }
-  };
+    return (
+        <div className="min-h-screen bg-gray-100 flex">
+            {/* Sidebar */}
+            <Sidebar onNewLead={handleNewLead} currentPage={currentPage} onPageChange={handlePageChange} />
 
-  const handleStatusChange = async (id: string, status: LeadStatus) => {
-    try {
-      await leadService.update(id, { status });
-      await loadLeads();
-    } catch (error) {
-      console.error('Error updating lead status:', error);
-    }
-  };
+            {/* Main Content */}
+            <div className="flex-1 ml-64 overflow-x-hidden">
 
-  const handleEdit = (lead: Lead) => {
-    setEditingLead(lead);
-    setIsModalOpen(true);
-  };
-
-  const handleExpand = (lead: Lead) => {
-    setViewingLead(lead);
-    setIsViewModalOpen(true);
-  };
-
-  const handleNewLead = () => {
-    setEditingLead(null);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingLead(null);
-  };
-
-  const handleCloseViewModal = () => {
-    setIsViewModalOpen(false);
-    setViewingLead(null);
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
-      <Sidebar onNewLead={handleNewLead} currentPage="dashboard" />
-
-      {/* Main Content */}
-      <div className="flex-1 ml-64">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
-          <div className="px-6 py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                🔥 Lead Scoring com IA
-              </h1>
-              <p className="text-gray-600 mt-1">
-                Sistema inteligente de qualificação de leads usando Groq AI
-              </p>
+                {/* Main Content */}
+                <main className="px-6 py-8 overflow-x-hidden">
+                    {renderPageContent()}
+                </main>
             </div>
-          </div>
-        </header>
 
-        {/* Main Content */}
-        <main className="px-6 py-8">
-          {/* Estatísticas */}
-          {stats && <DashboardStats stats={stats} />}
-
-          {/* Kanban de Leads */}
-          <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              📋 Kanban de Leads
-            </h2>
-            <div className="text-sm text-gray-500">
-              {stats && `Score médio: ${stats.averageScore}`}
-            </div>
-          </div>
-          
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <p className="text-gray-500 mt-4">Carregando leads...</p>
-            </div>
-          ) : (
-            <LeadKanban
-              leads={leads}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onAnalyze={handleAnalyze}
-              onStatusChange={handleStatusChange}
-              onExpand={handleExpand}
+            {/* Modal de Edição/Criação */}
+            <LeadModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                lead={editingLead}
+                onSubmit={editingLead ? (data) => handleUpdate(editingLead.id, data) : handleCreate}
             />
-          )}
-          </div>
-        </main>
-      </div>
 
-      {/* Modal de Edição/Criação */}
-      <LeadModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        lead={editingLead}
-        onSubmit={editingLead ? (data) => handleUpdate(editingLead.id, data) : handleCreate}
-      />
-
-      {/* Modal de Visualização */}
-      <LeadViewModal
-        isOpen={isViewModalOpen}
-        onClose={handleCloseViewModal}
-        lead={viewingLead}
-        onEdit={handleEdit}
-      />
-    </div>
-  );
+            {/* Modal de Visualização */}
+            <LeadViewModal
+                isOpen={isViewModalOpen}
+                onClose={handleCloseViewModal}
+                lead={viewingLead}
+                onEdit={handleEdit}
+            />
+        </div>
+    );
 }
 
 export default App;

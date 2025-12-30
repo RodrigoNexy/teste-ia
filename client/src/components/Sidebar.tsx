@@ -3,13 +3,14 @@ import React from 'react';
 interface SidebarProps {
   onNewLead: () => void;
   currentPage?: string;
+  onPageChange: (page: string) => void;
 }
 
-export function Sidebar({ onNewLead, currentPage = 'dashboard' }: SidebarProps) {
+export function Sidebar({ onNewLead, currentPage = 'dashboard', onPageChange }: SidebarProps) {
   const menuItems = [
     {
       id: 'dashboard',
-      label: 'Inicio',
+      label: 'Dashboard',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -67,6 +68,7 @@ export function Sidebar({ onNewLead, currentPage = 'dashboard' }: SidebarProps) 
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
+                onClick={() => onPageChange(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${currentPage === item.id
                   ? 'bg-blue-50 text-blue-700 font-semibold'
                   : 'text-gray-700 hover:bg-gray-50'
